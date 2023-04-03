@@ -24,7 +24,7 @@ public:
    * @param tolerance Tolerance for convergence.
    * @param max_iterations Maximum number of iterations.
    */
-  Solver(NLP<T, NX, NG, NH>& nlp,
+  Solver(const NLP<T, NX, NG, NH>& nlp,
       T tolerance,
       size_t max_iterations) :
       m_nlp(nlp),
@@ -38,11 +38,11 @@ public:
    * @param initial_solution_vector The initial solution vector.
    * @return Eigen::Matrix<T, 2, 1> The solution vector.
    */
-  virtual Eigen::Matrix<T, NX, 1> const solve(Eigen::Matrix<T, NX, 1> initial_solution_vector) = 0;
+  virtual const Eigen::Matrix<T, NX+NG, 1> solve(const Eigen::Matrix<T, NX, 1>& candidate_vector, const std::optional<Eigen::Matrix<T, NG, 1>>& lambda_vector = std::nullopt) const = 0;
 protected:
-  std::shared_ptr<NLP<T, NX, NG, NH>> m_nlp;
   T m_tolerance = 1e-5; ///< Tolerance for convergence.
   size_t m_max_iterations = 1000; ///< Maximum number of iterations.
+  const NLP<T, NX, NG, NH>& m_nlp;
 };
 
 #endif // SOLVER_H
