@@ -13,7 +13,7 @@
 
 int main() {
 
-    const size_t NUM_ITER = 1;
+    const size_t NUM_ITER = 100;
 
     const Eigen::Matrix<double, NX, NX> Q = Eigen::DiagonalMatrix<double, NX>(Eigen::Matrix<double, NX, 1>::Ones());
     const Eigen::Matrix<double, NX, 1> g = Eigen::Matrix<double, NX, 1>::Zero();

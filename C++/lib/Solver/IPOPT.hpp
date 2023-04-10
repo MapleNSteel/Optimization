@@ -65,7 +65,7 @@ public:
         G.block(NX, 0, NG, NX) = std::move(C);
         G.block(NX, NX, NG, NG) = std::move(D);
 
-        b.block(0, 0, NX, 1).noalias() += -dg_dx*sigma_vector.value();
+        b.block(0, 0, NX, 1).noalias() += dg_dx*sigma_vector.value();
         b.block(NX, 0, NG, 1) = -(D*sigma_vector.value() - this->m_mu*Eigen::Matrix<T, NG, 1>::Ones()).eval();
         
         combined_candidate.block(NX, 0, NG, 1) = sigma_vector.value();
