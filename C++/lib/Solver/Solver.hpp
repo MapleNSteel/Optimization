@@ -33,12 +33,14 @@ public:
   {}
 
   /**
-   * @brief Virtual function to solve the objective function using an iterative algorithm.
+   * @brief Virtual function to solve the objective function with inequality constraints.
    * 
-   * @param initial_solution_vector The initial solution vector.
+   * @param candidate_vector The initial solution vector.
+   * @param sigma_vector The sigma vector holding co-states for inequalities
+   * @param lambda_vector The sigma vector holding co-states for equalities
    * @return Eigen::Matrix<T, 2, 1> The solution vector.
    */
-  virtual const Eigen::Matrix<T, NX+NG, 1> solve(const Eigen::Matrix<T, NX, 1>& candidate_vector, const std::optional<Eigen::Matrix<T, NG, 1>>& lambda_vector = std::nullopt) const = 0;
+  virtual const Eigen::Matrix<T, NX+NG, 1> solve(const Eigen::Matrix<T, NX, 1>& candidate_vector, const std::optional<Eigen::Matrix<T, NG, 1>>& sigma_vector = std::nullopt, const std::optional<Eigen::Matrix<T, NH, 1>>& lambda_vector = std::nullopt) const = 0;
 protected:
   T m_tolerance = 1e-5; ///< Tolerance for convergence.
   size_t m_max_iterations = 1000; ///< Maximum number of iterations.
