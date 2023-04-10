@@ -13,17 +13,9 @@ template <typename T, size_t NX, size_t NG=0, size_t NH=0>
 class QP : public NLP<T, NX, NG, NH> {
 public:
     QP(const Eigen::Matrix<T, NX, NX>& Q,
-       const Eigen::Matrix<T, NX, 1>& g,
-       const std::optional<Eigen::Matrix<T, NG, NX>> G = std::nullopt,
-       const std::optional<Eigen::Matrix<T, NG, 1>> h = std::nullopt,
-       const std::optional<Eigen::Matrix<T, NH, NX>> A = std::nullopt,
-       const std::optional<Eigen::Matrix<T, NH, 1>> b = std::nullopt)
+       const Eigen::Matrix<T, NX, 1>& g)
     :  m_Q(std::move(Q)),
-       m_g(std::move(g)),
-       m_G(std::move(G)),
-       m_h(std::move(h)),
-       m_A(std::move(A)),
-       m_b(std::move(b))
+       m_g(std::move(g))
     {}
 
     virtual const T objectiveFunction(const Eigen::Matrix<T, NX, 1>& candidate_vector) const override {
@@ -37,11 +29,7 @@ public:
     }
 protected:
     const Eigen::Matrix<T, NX, NX> m_Q;
-    const Eigen::Matrix<T, NX, 1> m_g;
-    const std::optional<Eigen::Matrix<T, NG, NX>> m_G;
-    const std::optional<Eigen::Matrix<T, NG, 1>> m_h;
-    const std::optional<Eigen::Matrix<T, NH, NX>> m_A;
-    const std::optional<Eigen::Matrix<T, NH, 1>> m_b;                                                                                                                                                                                                                                
+    const Eigen::Matrix<T, NX, 1> m_g;                                                                                                                                                                                                                         
 };
 
 #endif // QP_H

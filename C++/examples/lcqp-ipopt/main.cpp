@@ -13,7 +13,7 @@
 
 int main() {
 
-    const size_t NUM_ITER = 100;
+    const size_t NUM_ITER = 1;
 
     const Eigen::Matrix<double, NX, NX> Q = Eigen::DiagonalMatrix<double, NX>(Eigen::Matrix<double, NX, 1>::Ones());
     const Eigen::Matrix<double, NX, 1> g = Eigen::Matrix<double, NX, 1>::Zero();
@@ -26,9 +26,10 @@ int main() {
     
     Eigen::Matrix<double, NX, 1> x0 = (Eigen::Matrix<double, NX, 1>::Ones()*3.).eval();
     Eigen::Matrix<double, NG, 1> sigma = mu*lcqp_1.inequalityConstraintVector(x0).value().cwiseInverse();
+    // Eigen::Matrix<double, NH, 1> lambda = Eigen::Matrix<double, NH, 1>::Ones();
 
     for (size_t num = 0; num < NUM_ITER; num++) {
-        const Eigen::Matrix<double, NX+NG, 1> x_opt = ipopt.solve(x0, sigma);
+        const Eigen::Matrix<double, NX+NG+NH, 1> x_opt = ipopt.solve(x0, sigma);
 
         x0.block<NX, 1>(0, 0) = x_opt.block<NX, 1>(0, 0).eval();
         sigma.block<NG, 1>(0, 0) = x_opt.block<NG, 1>(NX, 0).eval();

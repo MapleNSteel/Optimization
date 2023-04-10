@@ -13,10 +13,8 @@ class LCQP_1 : public QP<double, NX, NG, NH> {
         LCQP_1(const Eigen::Matrix<double, NX, NX>& Q,
                const Eigen::Matrix<double, NX, 1>& g,
                const std::optional<Eigen::Matrix<double, NG, NX>> G = std::nullopt,
-               const std::optional<Eigen::Matrix<double, NG, 1>> h = std::nullopt,
-               const std::optional<Eigen::Matrix<double, NH, NX>> A = std::nullopt,
-               const std::optional<Eigen::Matrix<double, NH, 1>> b = std::nullopt)
-            :  QP(Q, g, G, h, A, b) 
+               const std::optional<Eigen::Matrix<double, NG, 1>> h = std::nullopt)
+            :  QP(Q, g) 
         {}
         virtual ~LCQP_1() = default;
 
@@ -36,6 +34,21 @@ class LCQP_1 : public QP<double, NX, NG, NH> {
 
             return d_g;
         };
+
+        // virtual const std::optional<Eigen::Matrix<double, NH, 1>> equalityConstraintVector(const Eigen::Matrix<double, NX, 1>& candidate_vector) const {
+        //     Eigen::Matrix<double, NH, 1> h{
+        //         candidate_vector[0] - 1.5,
+        //     };
+
+        //     return h;
+        // };
+        // virtual const std::optional<Eigen::Matrix<double, NX, NH>> gradientEqualityConstraintVector(const Eigen::Matrix<double, NX, 1>& candidate_vector) const {
+        //     Eigen::Matrix<double, NX, NH> d_h = Eigen::Matrix<double, NX, NH>::Zero();
+
+        //     d_h(0, 0) = 1;
+
+        //     return d_h;
+        // };
 };
 
 #endif // LCQP_1_H
