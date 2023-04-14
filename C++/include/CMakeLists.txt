@@ -1,5 +1,3 @@
-find_package (Eigen3 3.3 REQUIRED)
-
 set(HEADER_FILE_NLP NLP/QP.hpp)
 add_library(NLP INTERFACE)
 

@@ -3,7 +3,7 @@ project(SolverLib)
 
 find_package (Eigen3 3.3 REQUIRED)
 
-add_subdirectory(lib)
+add_subdirectory(include)
 
 # Define the executable target
 add_executable(main examples/lcqp-ipopt/main.cpp  examples/lcqp-ipopt/LCQP_1.hpp)
