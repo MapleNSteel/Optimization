@@ -10,9 +10,12 @@
 #include "NLP/NLP.hpp"
 
 /**
- * @brief A generic Solver class that takes two functions and solves the function using an iterative algorithm.
+ * @brief A generic Solver class that solves a Nonlinear-Porgram using an iterative algorithm.
  * 
  * @tparam T The type used for the optimization
+ * @tparam NX Size of the optimization vector
+ * @tparam NG Number of inequality constraints
+ * @tparam NH Number of equality constraints
  */
 template <typename T, size_t NX, size_t NG=0, size_t NH=0>
 class Solver {
