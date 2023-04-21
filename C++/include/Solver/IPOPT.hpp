@@ -26,7 +26,7 @@ public:
           T tolerance = 1e-5,
           size_t max_iterations = 1000)
         : Solver<double, NX, NG, NH>(nlp, tolerance, max_iterations),
-          m_mu(std::move(mu))
+          m_mu(mu)
     {}
 
     void updateMu(const T& mu) {
@@ -49,7 +49,7 @@ public:
       Eigen::Matrix<T, NX+NG+NH, 1> combined_candidate;
 
       const Eigen::Matrix<T, NX, NX> A = this->m_nlp.hessianFunction(candidate_vector);
-      G.block(0, 0, NX, NX) = std::move(A);
+      G.block(0, 0, NX, NX) = A;
       b.block(0, 0, NX, 1) = -df_dx;
 
       combined_candidate.block(0, 0, NX, 1) = candidate_vector;
@@ -57,16 +57,16 @@ public:
       if (sigma_vector) {
         const Eigen::Matrix<T, NX, NG> dg_dx = this->m_nlp.gradientInequalityConstraintVector(candidate_vector).value();
 
-        const Eigen::Matrix<T, NX, NG> B = dg_dx;
+        const Eigen::Matrix<T, NX, NG> B = -dg_dx;
         const Eigen::Matrix<T, NG, NX> C = (sigma_vector.value().asDiagonal()*dg_dx.transpose()).eval();
         const Eigen::Matrix<T, NG, NG> D = Eigen::DiagonalMatrix<T, NG>(this->m_nlp.inequalityConstraintVector(candidate_vector).value());
 
-        G.block(0, NX, NX, NG) = std::move(B);
-        G.block(NX, 0, NG, NX) = std::move(C);
-        G.block(NX, NX, NG, NG) = std::move(D);
+        G.block(0, NX, NX, NG) = B;
+        G.block(NX, 0, NG, NX) = C;
+        G.block(NX, NX, NG, NG) = D;
 
-        b.block(0, 0, NX, 1).noalias() += -dg_dx*sigma_vector.value();
-        b.block(NX, 0, NG, 1) = -(D*sigma_vector.value() + this->m_mu*Eigen::Matrix<T, NG, 1>::Ones()).eval();
+        b.block(0, 0, NX, 1).noalias() += dg_dx*sigma_vector.value();
+        b.block(NX, 0, NG, 1) = -(D*sigma_vector.value() - this->m_mu*Eigen::Matrix<T, NG, 1>::Ones()).eval();
         
         combined_candidate.block(NX, 0, NG, 1) = sigma_vector.value();
       }

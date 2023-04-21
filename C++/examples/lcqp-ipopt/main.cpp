@@ -30,7 +30,7 @@ int main() {
     IPOPT<double, NX, NG, NH> ipopt(lcqp_1, mu);
     
     Eigen::Matrix<double, NX, 1> x_soln = (Eigen::Matrix<double, NX, 1>::Ones()*3.).eval();
-    Eigen::Matrix<double, NG, 1> sigma = -mu*lcqp_1.inequalityConstraintVector(x_soln).value().cwiseInverse();
+    Eigen::Matrix<double, NG, 1> sigma = mu*lcqp_1.inequalityConstraintVector(x_soln).value().cwiseInverse();
     Eigen::Matrix<double, NH, 1> lambda = Eigen::Matrix<double, NH, 1>::Ones();
 
     for (size_t num = 0; num < NUM_ITER; num++) {
