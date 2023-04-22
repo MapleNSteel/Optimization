@@ -82,7 +82,26 @@ public:
         combined_candidate.block(NX+NG, 0, NH, 1) = lambda_vector.value();
       }
 
-      Eigen::Matrix<T, NX+NG+NH, 1> solution =(combined_candidate + G.fullPivLu().solve(b)).eval();
+      Eigen::Matrix<T, NX+NG+NH, 1> descent_dir = G.fullPivLu().solve(b);
+
+      std:: cout << "Descent direction: \n" << descent_dir << "\n";
+
+      T alpha = 1;
+
+      for (size_t idx = NX; idx < NX+NG; idx++) {
+        std::cout << "combined_candidate: \n" << combined_candidate[idx] << "\n";
+        if (descent_dir[idx] < 0){
+          T temp_alpha = -combined_candidate[idx]/descent_dir[idx];
+
+          std::cout << "temp_alpha: " << temp_alpha << "\n";
+
+          if (0 <= temp_alpha && temp_alpha <= 1)
+            alpha = std::min(alpha, temp_alpha);
+
+          }
+      }
+
+      Eigen::Matrix<T, NX+NG+NH, 1> solution =(combined_candidate + alpha*descent_dir).eval();
 
       return solution;
     };

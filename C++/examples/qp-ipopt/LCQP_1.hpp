@@ -20,8 +20,8 @@ class LCQP_1 : public QP<double, NX, NG, NH> {
 
         virtual const std::optional<Eigen::Matrix<double, NG, 1>> inequalityConstraintVector(const Eigen::Matrix<double, NX, 1>& candidate_vector) const {
             Eigen::Matrix<double, NG, 1> g{
-                -candidate_vector[0] + 1,
-                -candidate_vector[1] + 1
+                candidate_vector[0] - 1,
+                candidate_vector[1] - 1
             };
 
             return g;
@@ -29,8 +29,8 @@ class LCQP_1 : public QP<double, NX, NG, NH> {
         virtual const std::optional<Eigen::Matrix<double, NX, NG>> gradientInequalityConstraintVector(const Eigen::Matrix<double, NX, 1>& candidate_vector) const {
             Eigen::Matrix<double, NX, NG> d_g = Eigen::Matrix<double, NX, NG>::Zero();
 
-            d_g(0, 0) = -1;
-            d_g(1, 1) = -1;
+            d_g(0, 0) = 1;
+            d_g(1, 1) = 1;
 
             return d_g;
         };
