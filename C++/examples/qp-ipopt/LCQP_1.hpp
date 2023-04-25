@@ -9,7 +9,6 @@ const size_t NH = 1;
 
 class LCQP_1 : public QP<double, NX, NG, NH> {
     public:
-
         LCQP_1(const Eigen::Matrix<double, NX, NX>& Q,
                const Eigen::Matrix<double, NX, 1>& g,
                const std::optional<Eigen::Matrix<double, NG, NX>> G = std::nullopt,
