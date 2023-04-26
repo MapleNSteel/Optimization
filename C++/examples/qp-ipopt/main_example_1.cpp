@@ -30,20 +30,20 @@ int main() {
     IPOPT<double, NX, NG, NH> ipopt(example, mu);
     
     Eigen::Matrix<double, NX, 1> x_soln = (Eigen::Matrix<double, NX, 1>::Ones()*3.).eval();
-    Eigen::Matrix<double, NG, 1> lambda = mu*example.inequalityConstraintVector(x_soln).value().cwiseInverse();
     Eigen::Matrix<double, NH, 1> sigma = Eigen::Matrix<double, NH, 1>::Ones();
 
     for (size_t num = 0; num < NUM_ITER; num++) {
-        const Eigen::Matrix<double, NX+NG+NH, 1> x_opt = ipopt.solve(x_soln, lambda);
+        const Eigen::Matrix<double, NX+NH, 1> x_opt = ipopt.solve(x_soln);
 
         x_soln = x_opt.block<NX, 1>(0, 0);
-        lambda = mu*example.inequalityConstraintVector(x_soln).value().cwiseInverse();
-        sigma.block<NH, 1>(0, 0) = x_opt.block<NH, 1>(NX, 0);
+        sigma = x_opt.block<NH, 1>(NX, 0);
 
         mu *= 0.8;
 
         ipopt.updateMu(mu);
     }
+    
+    Eigen::Matrix<double, NG, 1> lambda = mu*example.inequalityConstraintVector(x_soln).value().cwiseInverse();
 
     std::cout << "Objective function: " << example.objectiveFunction(x_soln) << std::endl;
     std::cout << "Optimized solution:\n" << x_soln << std::endl;

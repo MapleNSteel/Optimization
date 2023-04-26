@@ -39,8 +39,8 @@ class example_1 : public NLP<double, NX, NG, NH> {
 
             d_g(0, 0) = candidate_vector[1];
             d_g(1, 0) = candidate_vector[0];
-            d_g(0, 1) = -2*std::pow(candidate_vector[0], 2.0);
-            d_g(1, 1) = -2*std::pow(candidate_vector[1], 2.0);
+            d_g(0, 1) = -2*candidate_vector[0];
+            d_g(1, 1) = -2*candidate_vector[1];
 
             return d_g;
         };
