@@ -41,11 +41,11 @@ int main() {
         mu *= 0.8;
 
         ipopt.updateMu(mu);
-
-        std::cout << "Objective function: " << example.objectiveFunction(x_soln) << std::endl;
-        std::cout << "Optimized solution:\n" << x_soln << std::endl;
-        std::cout << "Lambda:\n" << lambda << std::endl;
     }
+
+    std::cout << "Objective function: " << example.objectiveFunction(x_soln) << std::endl;
+    std::cout << "Optimized solution:\n" << x_soln << std::endl;
+    std::cout << "Lambda:\n" << lambda << std::endl;
 
     return 0;
 }
