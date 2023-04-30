@@ -31,19 +31,19 @@ int main() {
     
     Eigen::Matrix<double, NX, 1> x_soln = (Eigen::Matrix<double, NX, 1>::Ones()*3.).eval();
     Eigen::Matrix<double, NH, 1> sigma = Eigen::Matrix<double, NH, 1>::Ones();
+    Eigen::Matrix<double, NG, 1> lambda = mu*lcqp_1.inequalityConstraintVector(x_soln).value().cwiseInverse();
 
     for (size_t num = 0; num < NUM_ITER; num++) {
-        const Eigen::Matrix<double, NX+NH, 1> x_opt = ipopt.solve(x_soln, sigma);
+        const Eigen::Matrix<double, NX+NH+NG, 1> x_opt = ipopt.solve(x_soln, sigma, lambda);
 
         x_soln = x_opt.block<NX, 1>(0, 0);
-        sigma.block<NH, 1>(0, 0) = x_opt.block<NH, 1>(NX, 0);
+        sigma = x_opt.block<NH, 1>(NX, 0);
+        lambda = x_opt.block<NG, 1>(NX+NH, 0);
 
         mu *= 0.8;
 
         ipopt.updateMu(mu);
     }
-    
-    Eigen::Matrix<double, NG, 1> lambda = mu*lcqp_1.inequalityConstraintVector(x_soln).value().cwiseInverse();
 
     std::cout << "Objective function: " << lcqp_1.objectiveFunction(x_soln) << std::endl;
     std::cout << "Optimized solution:\n" << x_soln << std::endl;
